@@ -4,7 +4,7 @@ const blogContainer = document.getElementById("blog-container");
 
 async function fetchRandomNews() {
   try {
-    const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&pageSize=25&apikey=${apiKey}`;
+    const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&pageSize=12&apikey=${apiKey}`;
     const response = await fetch(apiUrl);
     const data = await response.json();
     return data.articles;
@@ -23,12 +23,19 @@ function displayBlogs(articles) {
     img.src = article.urlToImage;
     img.alt = article.title;
     const title = document.createElement("h2");
-    title.textContent = article.title;
+    const truncatedTitle =
+      article.title.length > 50
+        ? article.title.slice(0, 50) + "..."
+        : article.title;
+    title.textContent = truncatedTitle;
     const description = document.createElement("p");
     description.textContent = article.description;
     blogCard.appendChild(img);
     blogCard.appendChild(title);
     blogCard.appendChild(description);
+    blogCard.addEventListener("click", () => {
+      window.open(article.url, "_blank");
+    });
     blogContainer.appendChild(blogCard);
   });
 }
