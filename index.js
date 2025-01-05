@@ -1,6 +1,8 @@
 const apiKey = "eb993dce9d2745be97d320eaa48b2f7c";
 
 const blogContainer = document.getElementById("blog-container");
+const searchField = document.getElementById("search-input");
+const searchButton = document.getElementById("search-button");
 
 async function fetchRandomNews() {
   try {
@@ -9,6 +11,27 @@ async function fetchRandomNews() {
     const data = await response.json();
     return data.articles;
     console.log(data);
+  } catch (error) {
+    console.error("Error fetching random news", error);
+    return [];
+  }
+}
+searchButton.addEventListener("click", async () => {
+  const query = searchField.value.trim();
+  if (query !== "") {
+    try {
+      const articles = await fetchRandomNewsQuery(query);
+    } catch (error) {
+      console.log("Error fetching news by query", error);
+    }
+  }
+});
+async function fetchRandomNewsQuery(query) {
+  try {
+    const apiUrl = `https://newsapi.org/v2/everything?q=${query}&pageSize=12&apikey=${apiKey}`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    return data.articles;
   } catch (error) {
     console.error("Error fetching random news", error);
     return [];
