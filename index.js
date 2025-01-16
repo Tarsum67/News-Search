@@ -21,6 +21,7 @@ searchButton.addEventListener("click", async () => {
   if (query !== "") {
     try {
       const articles = await fetchRandomNewsQuery(query);
+      displayBlogs(articles)
     } catch (error) {
       console.log("Error fetching news by query", error);
     }
